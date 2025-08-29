@@ -4,11 +4,12 @@
   "description": "Test automation project with Cypress for UI and API testing",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run --headless --browser chrome",
-    "cy:run:ui": "cypress run --headless --browser chrome --spec \"cypress/e2e/ui/**/*\"",
-    "cy:run:api": "cypress run --headless --browser chrome --spec \"cypress/e2e/api/**/*\"",
+    "test": "cypress run --browser chrome",
+    "cy:open": "cypress open --browser chrome",
+    "cy:run": "cypress run --browser chrome --headless",
+    "cy:run:ui": "cypress run --browser chrome --headless --spec \"cypress/e2e/ui/**/*\"",
+    "cy:run:api": "cypress run --browser chrome --headless --spec \"cypress/e2e/api/**/*\"",
+    "cy:run:ci": "cypress run --browser chrome --headless --config video=false",
     "generate:report": "npx mochawesome-merge cypress/reports/mocha/*.json > cypress/reports/mochawesome.json && npx marge cypress/reports/mochawesome.json -o cypress/reports --inline"
   },
   "keywords": [
