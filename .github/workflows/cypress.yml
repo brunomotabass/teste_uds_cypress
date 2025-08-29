@@ -7,15 +7,16 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       matrix:
         node-version: [18.x]
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -24,29 +25,34 @@ jobs:
       run: npm ci
       
     - name: Run Cypress tests
-      run: npm run cy:run
-      
-    - name: Archive test artifacts
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: cypress-artifacts
-        path: |
-          cypress/screenshots
-          cypress/videos
-          
-    - name: Generate and upload HTML report
-      if: always()
       run: |
-        npm install -g mochawesome-merge mochawesome-report-generator
-        npx mochawesome-merge cypress/reports/mocha/*.json > cypress/reports/mochawesome.json
-        npx marge cypress/reports/mochawesome.json -o cypress/reports --inline
-      continue-on-error: true
+        npx cypress run --browser chrome --headless \
+          --config defaultCommandTimeout=10000,pageLoadTimeout=30000,responseTimeout=30000
+      env:
+        CYPRESS_RETRIES: 2
       
-    - name: Upload HTML report
-      if: always()
-      uses: actions/upload-artifact@v3
+    - name: Upload screenshots
+      if: failure()
+      uses: actions/upload-artifact@v4
       with:
-        name: html-report
-        path: cypress/reports
-        continue-on-error: true
+        name: cypress-screenshots
+        path: cypress/screenshots
+        retention-days: 7
+        
+    - name: Upload videos
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cypress-videos
+        path: cypress/videos
+        retention-days: 7
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cypress-results
+        path: |
+          cypress/reports
+          mochawesome-report
+        retention-days: 7
