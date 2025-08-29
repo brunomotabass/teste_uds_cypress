@@ -1,0 +1,52 @@
+name: Cypress Tests
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run Cypress tests
+      run: npm run cy:run
+      
+    - name: Archive test artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-artifacts
+        path: |
+          cypress/screenshots
+          cypress/videos
+          
+    - name: Generate and upload HTML report
+      if: always()
+      run: |
+        npm install -g mochawesome-merge mochawesome-report-generator
+        npx mochawesome-merge cypress/reports/mocha/*.json > cypress/reports/mochawesome.json
+        npx marge cypress/reports/mochawesome.json -o cypress/reports --inline
+      continue-on-error: true
+      
+    - name: Upload HTML report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-report
+        path: cypress/reports
+        continue-on-error: true
