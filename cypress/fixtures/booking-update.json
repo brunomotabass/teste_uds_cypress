@@ -1,11 +1,11 @@
 {
-  "firstname": "James",
-  "lastname": "Brown",
-  "totalprice": 222,
+  "firstname": "Bruno",
+  "lastname": "Update",
+  "totalprice": 234,
   "depositpaid": false,
   "bookingdates": {
-    "checkin": "2020-01-01",
-    "checkout": "2021-01-01"
+    "checkin": "2025-08-29",
+    "checkout": "2025-09-01"
   },
-  "additionalneeds": "Lunch"
+  "additionalneeds": "Teste_update"
 }

@@ -1,11 +1,11 @@
 {
-  "firstname": "Jim",
-  "lastname": "Brown",
-  "totalprice": 111,
+  "firstname": "Bruno",
+  "lastname": "Teste",
+  "totalprice": 123,
   "depositpaid": true,
   "bookingdates": {
-    "checkin": "2018-01-01",
-    "checkout": "2019-01-01"
+    "checkin": "2025-08-28",
+    "checkout": "2025-09-01"
   },
-  "additionalneeds": "Breakfast"
+  "additionalneeds": "Teste"
 }
