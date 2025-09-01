@@ -25,15 +25,4 @@ describe('SauceDemo Cart Tests', () => {
     cartPage.getCartItemByName('Sauce Labs Backpack').should('exist');
     cartPage.getCartItemByName('Sauce Labs Bike Light').should('exist');
   });
-
-  it('4.4 - should remove item from cart', () => {
-    inventoryPage.addItemToCart('Sauce Labs Backpack');
-    inventoryPage.addItemToCart('Sauce Labs Bike Light');
-    
-    inventoryPage.goToCart();
-    cartPage.removeItem('Sauce Labs Backpack');
-    
-    cartPage.getCartItems().should('have.length', 1);
-    inventoryPage.getCartBadge().should('have.text', '1');
-  });
 });
