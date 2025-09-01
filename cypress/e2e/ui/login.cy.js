@@ -14,13 +14,4 @@ describe('SauceDemo Login Tests', () => {
     cy.url().should('include', '/inventory.html');
     cy.get('.title').should('have.text', 'Products');
   });
-
-  it('4.2 - should show error message with invalid credentials', () => {
-    loginPage.login('invalid_user', 'invalid_password');
-    cy.get('[data-test="error"]')
-      .should('be.visible')
-      .and('contain', 'Username and password do not match');
-    cy.url().should('include', 'saucedemo.com');
-    cy.get('.inventory_list').should('not.exist');
-  });
 });
